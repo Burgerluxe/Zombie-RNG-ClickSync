@@ -12,13 +12,16 @@ SoundPlay, C:\Windows\Media\Windows Notify.wav
 Gui, +AlwaysOnTop -Caption +ToolWindow
 Gui, Color, 0x0A0A52  ; Color azul marino súper oscuro (hexadecimal: #0A0A52)
 Gui, Font, s20 wBold, Verdana  ; Tamaño y estilo de fuente
-Gui, Add, Text, Center cWhite, V-3.2  ; Texto centrado en color blanco con versión actualizada
+Gui, Add, Text, Center cWhite, V-1  ; Texto centrado en color blanco con versión actualizada
 Gui, Show, AutoSize Center
 Sleep, 1000  ; Mostrar el menú durante 1 segundo
 Gui, Destroy  ; Cerrar el mini menú
 
-; Agrega la hotkey para cerrar el script
-^F11::ExitApp  ; Control + F11 para cerrar el script
+; Hotkey para cerrar el script con Control + Alt + X
+^!x::
+SoundPlay, C:\Windows\Media\Windows Notify.wav  ; Reproduce el sonido antes de cerrarse
+ExitApp  ; Comando para salir completamente del script
+return
 
 F4::  ; F4 alterna todos los módulos/hotkeys
 hotkey_t_enabled := !hotkey_t_enabled  ; Activa/desactiva "T"
