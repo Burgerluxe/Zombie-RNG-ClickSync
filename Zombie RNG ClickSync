@@ -8,36 +8,41 @@ hold_left_click_enabled := false ; Estado del clic izquierdo mantenido ("F")
 ; Reproducir sonido al abrir el script
 SoundPlay, C:\Windows\Media\Windows Notify.wav
 
-; Mostrar un mini menú al iniciar
-Gui, +AlwaysOnTop -Caption +ToolWindow
-Gui, Color, 0x0A0A52  ; Color azul marino súper oscuro (hexadecimal: #0A0A52)
-Gui, Font, s20 wBold, Verdana  ; Tamaño y estilo de fuente
-Gui, Add, Text, Center cWhite, V-3.2  ; Texto centrado en color blanco con versión actualizada
-Gui, Show, AutoSize Center
-Sleep, 1000  ; Mostrar el menú durante 1 segundo
-Gui, Destroy  ; Cerrar el mini menú
+; Agrega la hotkey para cerrar el script
+^F11::ExitApp  ; Control + F11 para cerrar el script
 
-; Hotkey para cerrar el script con Control + Alt + X
-^!x::
-SoundPlay, C:\Windows\Media\Windows Notify.wav  ; Reproduce el sonido antes de cerrarse
-ExitApp  ; Comando para salir completamente del script
-return
-
-; Hotkey para alternar módulos con F4
-F4::
+F4::  ; F4 alterna todos los módulos/hotkeys
 hotkey_t_enabled := !hotkey_t_enabled  ; Activa/desactiva "T"
 hotkey_e_enabled := !hotkey_e_enabled  ; Activa/desactiva "E"
 hold_left_click_enabled := !hold_left_click_enabled  ; Activa/desactiva clic izquierdo mantenido ("F")
 
-; Mostrar el estado de activación/desactivación con ToolTip
-if (hotkey_t_enabled || hotkey_e_enabled || hold_left_click_enabled) {
-    ToolTip, On, % (A_ScreenWidth // 2 - 20), % (A_ScreenHeight // 2 - 20)  ; Centrar el ToolTip en pantalla
+if (hotkey_t_enabled) {
+    Hotkey, t, ToggleAutoClick, On  ; Activa el hotkey "T"
 } else {
-    ToolTip, Off, % (A_ScreenWidth // 2 - 20), % (A_ScreenHeight // 2 - 20)  ; Centrar el ToolTip en pantalla
+    Hotkey, t, ToggleAutoClick, Off  ; Desactiva el hotkey "T"
 }
 
-Sleep, 500  ; Mostrar el ToolTip durante 0.5 segundos
-ToolTip  ; Ocultar el ToolTip
+if (hotkey_e_enabled) {
+    Hotkey, E, ToggleAutoPress, On  ; Activa el hotkey "E"
+} else {
+    Hotkey, E, ToggleAutoPress, Off  ; Desactiva el hotkey "E"
+}
+
+if (hold_left_click_enabled) {
+    Hotkey, F, ToggleHoldLeftClick, On  ; Activa el hotkey para clic izquierdo mantenido
+} else {
+    Hotkey, F, ToggleHoldLeftClick, Off  ; Desactiva el hotkey para clic izquierdo mantenido
+}
+
+; Muestra el ToolTip de activación/desactivación
+if (hotkey_t_enabled || hotkey_e_enabled || hold_left_click_enabled) {
+    ToolTip, % "Activado", , , 1, "AZUL_MARINO"
+} else {
+    ToolTip, % "Desactivado", , , 1, "AZUL_MARINO"
+}
+
+Sleep, 500  ; El ToolTip dura 0.5 segundos
+ToolTip  ; Oculta el ToolTip
 return
 
 ; Funcionalidad del hotkey "T" (clic infinito y tecla Espacio)
@@ -49,6 +54,7 @@ if (toggle_auto_click) {
 } else {
     SetTimer, AutoClick, Off  ; Detiene el bucle de clics
     SetTimer, AutoSpacePress, Off  ; Detiene el temporizador para la barra espaciadora
+    ToolTip  ; Oculta el ToolTip cuando se detiene
 }
 return
 
@@ -88,6 +94,7 @@ if (toggle_auto_press) {
     SetTimer, AutoPressAndClick, 10  ; Activa el bucle de presionar y hacer clic
 } else {
     SetTimer, AutoPressAndClick, Off  ; Detiene el bucle
+    ToolTip  ; Oculta el ToolTip cuando se detiene
 }
 return
 
@@ -96,7 +103,7 @@ if (!toggle_auto_press) {
     SetTimer, AutoPressAndClick, Off  ; Detiene el temporizador si está desactivado
     return
 }
-; Realiza solo clics
+; Realiza solo clics (se elimina el envío de "R")
 Click
 Sleep, 20
 return
