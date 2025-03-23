@@ -4,6 +4,7 @@ toggle_auto_press := false  ; Estado de presionar y hacer clic (para "E")
 hotkey_t_enabled := false   ; Estado del hotkey "T"
 hotkey_e_enabled := false   ; Estado del hotkey "E"
 hold_left_click_enabled := false ; Estado del clic izquierdo mantenido ("F")
+script_version := "1.0.1"   ; Versión del script
 
 ; Reproducir sonido al abrir el script
 SoundPlay, C:\Windows\Media\Windows Notify.wav
@@ -12,7 +13,7 @@ SoundPlay, C:\Windows\Media\Windows Notify.wav
 Gui, +AlwaysOnTop -Caption +ToolWindow
 Gui, Color, 0x0A0A52  ; Color azul marino súper oscuro (hexadecimal: #0A0A52)
 Gui, Font, s20 wBold, Verdana  ; Tamaño y estilo de fuente
-Gui, Add, Text, Center cWhite, V-1  ; Texto centrado en color blanco con versión actualizada
+Gui, Add, Text, Center cWhite, V-%script_version%  ; Texto centrado con versión sincronizada
 Gui, Show, AutoSize Center
 Sleep, 1000  ; Mostrar el menú durante 1 segundo
 Gui, Destroy  ; Cerrar el mini menú
@@ -62,7 +63,7 @@ ToggleAutoClick:
 toggle_auto_click := !toggle_auto_click  ; Cambia entre activado y desactivado
 if (toggle_auto_click) {
     SetTimer, AutoClick, 10  ; Activa el bucle de clics
-    SetTimer, AutoSpacePress, 5000  ; Activa el temporizador para la barra espaciadora (cada 5 segundos)
+    SetTimer, AutoSpacePress, 4000  ; Activa el temporizador para la barra espaciadora (cada 4 segundos)
 } else {
     SetTimer, AutoClick, Off  ; Detiene el bucle de clics
     SetTimer, AutoSpacePress, Off  ; Detiene el temporizador para la barra espaciadora
@@ -92,10 +93,12 @@ Click3Times(x, y) {
     }
 }
 
-; Presionar tecla Espacio continuamente cada 5 segundos mientras "T" esté activo
+; Presionar tecla Espacio continuamente cada 4 segundos mientras "T" esté activo
 AutoSpacePress:
 if (toggle_auto_click) {  ; Verifica si "T" está activo
-    Send, {Space}  ; Simula presionar la tecla Espacio
+    Send, {Space Down}  ; Mantiene presionada la tecla Espacio
+    Sleep, 500  ; Duración del presionado (500 ms)
+    Send, {Space Up}  ; Suelta la tecla Espacio
 }
 return
 
