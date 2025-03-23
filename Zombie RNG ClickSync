@@ -1,3 +1,10 @@
+; Variables generales
+toggle_auto_click := false  ; Estado del clic infinito (para "T")
+toggle_auto_press := false  ; Estado de presionar y hacer clic (para "E")
+hotkey_t_enabled := false   ; Estado del hotkey "T"
+hotkey_e_enabled := false   ; Estado del hotkey "E"
+hold_left_click_enabled := false ; Estado del clic izquierdo mantenido ("F")
+
 ; Reproducir sonido al abrir el script
 SoundPlay, C:\Windows\Media\Windows Notify.wav
 
@@ -5,7 +12,7 @@ SoundPlay, C:\Windows\Media\Windows Notify.wav
 Gui, +AlwaysOnTop -Caption +ToolWindow
 Gui, Color, 0x0A0A52  ; Color azul marino súper oscuro (hexadecimal: #0A0A52)
 Gui, Font, s20 wBold, Verdana  ; Tamaño y estilo de fuente
-Gui, Add, Text, Center cWhite, V-3  ; Texto centrado en color blanco
+Gui, Add, Text, Center cWhite, V-3.1  ; Texto centrado en color blanco
 Gui, Show, AutoSize Center
 Sleep, 1000  ; Mostrar el menú durante 1 segundo
 Gui, Destroy  ; Cerrar el mini menú
@@ -16,13 +23,6 @@ SoundPlay, C:\Windows\Media\Windows Notify.wav  ; Reproduce el sonido antes de c
 ExitApp  ; Comando para salir completamente del script
 return
 
-; Variables generales
-toggle_auto_click := false  ; Estado del clic infinito (para "T")
-toggle_auto_press := false  ; Estado de presionar y hacer clic (para "E")
-hotkey_t_enabled := false   ; Estado del hotkey "T"
-hotkey_e_enabled := false   ; Estado del hotkey "E"
-hold_left_click_enabled := false ; Estado del clic izquierdo mantenido ("F")
-
 F4::  ; F4 alterna todos los módulos/hotkeys
 hotkey_t_enabled := !hotkey_t_enabled  ; Activa/desactiva "T"
 hotkey_e_enabled := !hotkey_e_enabled  ; Activa/desactiva "E"
@@ -30,9 +30,9 @@ hold_left_click_enabled := !hold_left_click_enabled  ; Activa/desactiva clic izq
 
 ; Mostrar el estado de activación/desactivación con ToolTip
 if (hotkey_t_enabled || hotkey_e_enabled || hold_left_click_enabled) {
-    ToolTip, Activado, 0, 0
+    ToolTip, On, 0, 0
 } else {
-    ToolTip, Desactivado, 0, 0
+    ToolTip, Off, 0, 0
 }
 
 Sleep, 500  ; El ToolTip dura 0.5 segundos
