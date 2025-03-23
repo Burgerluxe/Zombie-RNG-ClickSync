@@ -8,6 +8,15 @@ hold_left_click_enabled := false ; Estado del clic izquierdo mantenido ("F")
 ; Reproducir sonido al abrir el script
 SoundPlay, C:\Windows\Media\Windows Notify.wav
 
+; Mostrar un mini menú al iniciar
+Gui, +AlwaysOnTop -Caption +ToolWindow
+Gui, Color, 0x0A0A52  ; Color azul marino súper oscuro (hexadecimal: #0A0A52)
+Gui, Font, s20 wBold, Verdana  ; Tamaño y estilo de fuente
+Gui, Add, Text, Center cWhite, V-3.2  ; Texto centrado en color blanco con versión actualizada
+Gui, Show, AutoSize Center
+Sleep, 1000  ; Mostrar el menú durante 1 segundo
+Gui, Destroy  ; Cerrar el mini menú
+
 ; Agrega la hotkey para cerrar el script
 ^F11::ExitApp  ; Control + F11 para cerrar el script
 
