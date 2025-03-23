@@ -12,7 +12,7 @@ SoundPlay, C:\Windows\Media\Windows Notify.wav
 Gui, +AlwaysOnTop -Caption +ToolWindow
 Gui, Color, 0x0A0A52  ; Color azul marino súper oscuro (hexadecimal: #0A0A52)
 Gui, Font, s20 wBold, Verdana  ; Tamaño y estilo de fuente
-Gui, Add, Text, Center cWhite, V-3.1  ; Texto centrado en color blanco
+Gui, Add, Text, Center cWhite, V-3.2  ; Texto centrado en color blanco con versión actualizada
 Gui, Show, AutoSize Center
 Sleep, 1000  ; Mostrar el menú durante 1 segundo
 Gui, Destroy  ; Cerrar el mini menú
@@ -23,20 +23,21 @@ SoundPlay, C:\Windows\Media\Windows Notify.wav  ; Reproduce el sonido antes de c
 ExitApp  ; Comando para salir completamente del script
 return
 
-F4::  ; F4 alterna todos los módulos/hotkeys
+; Hotkey para alternar módulos con F4
+F4::
 hotkey_t_enabled := !hotkey_t_enabled  ; Activa/desactiva "T"
 hotkey_e_enabled := !hotkey_e_enabled  ; Activa/desactiva "E"
 hold_left_click_enabled := !hold_left_click_enabled  ; Activa/desactiva clic izquierdo mantenido ("F")
 
 ; Mostrar el estado de activación/desactivación con ToolTip
 if (hotkey_t_enabled || hotkey_e_enabled || hold_left_click_enabled) {
-    ToolTip, On, 0, 0
+    ToolTip, On, % (A_ScreenWidth // 2 - 20), % (A_ScreenHeight // 2 - 20)  ; Centrar el ToolTip en pantalla
 } else {
-    ToolTip, Off, 0, 0
+    ToolTip, Off, % (A_ScreenWidth // 2 - 20), % (A_ScreenHeight // 2 - 20)  ; Centrar el ToolTip en pantalla
 }
 
-Sleep, 500  ; El ToolTip dura 0.5 segundos
-ToolTip  ; Oculta el ToolTip
+Sleep, 500  ; Mostrar el ToolTip durante 0.5 segundos
+ToolTip  ; Ocultar el ToolTip
 return
 
 ; Funcionalidad del hotkey "T" (clic infinito y tecla Espacio)
@@ -48,7 +49,6 @@ if (toggle_auto_click) {
 } else {
     SetTimer, AutoClick, Off  ; Detiene el bucle de clics
     SetTimer, AutoSpacePress, Off  ; Detiene el temporizador para la barra espaciadora
-    ToolTip  ; Oculta el ToolTip cuando se detiene
 }
 return
 
