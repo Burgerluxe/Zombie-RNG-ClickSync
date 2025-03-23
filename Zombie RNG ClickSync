@@ -8,7 +8,7 @@ hold_left_click_enabled := false ; Estado del clic izquierdo mantenido ("F")
 ; Reproducir sonido al abrir el script
 SoundPlay, C:\Windows\Media\Windows Notify.wav
 
-; Agrega la hotkey para cerrar el script con Control + Alt + X
+; Hotkey para cerrar el script con Control + Alt + X
 ^!x::
 SoundPlay, C:\Windows\Media\Windows Notify.wav  ; Reproduce el sonido antes de cerrarse
 ExitApp  ; Comando para salir completamente del script
@@ -19,25 +19,15 @@ hotkey_t_enabled := !hotkey_t_enabled  ; Activa/desactiva "T"
 hotkey_e_enabled := !hotkey_e_enabled  ; Activa/desactiva "E"
 hold_left_click_enabled := !hold_left_click_enabled  ; Activa/desactiva clic izquierdo mantenido ("F")
 
-if (hotkey_t_enabled) {
-    Hotkey, t, ToggleAutoClick, On  ; Activa el hotkey "T"
+; Mostrar el estado de activación/desactivación con ToolTip
+if (hotkey_t_enabled || hotkey_e_enabled || hold_left_click_enabled) {
+    ToolTip, Activado, 0, 0
 } else {
-    Hotkey, t, ToggleAutoClick, Off  ; Desactiva el hotkey "T"
+    ToolTip, Desactivado, 0, 0
 }
 
-if (hotkey_e_enabled) {
-    Hotkey, E, ToggleAutoPress, On  ; Activa el hotkey "E"
-} else {
-    Hotkey, E, ToggleAutoPress, Off  ; Desactiva el hotkey "E"
-}
-
-if (hold_left_click_enabled) {
-    Hotkey, F, ToggleHoldLeftClick, On  ; Activa el hotkey para clic izquierdo mantenido
-} else {
-    Hotkey, F, ToggleHoldLeftClick, Off  ; Desactiva el hotkey para clic izquierdo mantenido
-}
-
-Sleep, 500  ; Pausa breve
+Sleep, 500  ; El ToolTip dura 0.5 segundos
+ToolTip  ; Oculta el ToolTip
 return
 
 ; Funcionalidad del hotkey "T" (clic infinito y tecla Espacio)
@@ -49,6 +39,7 @@ if (toggle_auto_click) {
 } else {
     SetTimer, AutoClick, Off  ; Detiene el bucle de clics
     SetTimer, AutoSpacePress, Off  ; Detiene el temporizador para la barra espaciadora
+    ToolTip  ; Oculta el ToolTip cuando se detiene
 }
 return
 
